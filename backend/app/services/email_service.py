@@ -117,13 +117,13 @@ def _dispatch_email(to_email: str, subject: str, html_content: str, text_content
         except Exception as e:
             print(f"⚠️ [Email Service] Resend dispatch error: {e}")
 
-    # 2. Try SMTP if SMTP_HOST is configured
-    smtp_host = settings.smtp_host or os.getenv("SMTP_HOST")
+    # 2. Try SMTP if SMTP_HOST or SMTP_USER is configured
+    smtp_host = settings.smtp_host or os.getenv("SMTP_HOST") or "smtp.gmail.com"
     smtp_port = settings.smtp_port or int(os.getenv("SMTP_PORT", 587))
     smtp_user = settings.smtp_user or os.getenv("SMTP_USER")
     smtp_password = settings.smtp_password or os.getenv("SMTP_PASSWORD")
 
-    if smtp_host and smtp_user and smtp_password:
+    if smtp_user and smtp_password:
         try:
             from email.utils import formatdate, make_msgid
 
@@ -140,17 +140,34 @@ def _dispatch_email(to_email: str, subject: str, html_content: str, text_content
             msg.attach(part1)
             msg.attach(part2)
 
-            if smtp_port == 465:
-                server = smtplib.SMTP_SSL(smtp_host, smtp_port, timeout=15)
-            else:
-                server = smtplib.SMTP(smtp_host, smtp_port, timeout=15)
-                server.starttls()
+            # Try ports in order of reliability for cloud hosts (465 SSL, then 587 TLS)
+            ports_to_try = [465, 587] if smtp_port == 465 else [587, 465]
+            last_err = None
 
-            server.login(smtp_user, smtp_password)
-            server.sendmail(smtp_user, [to_email], msg.as_string())
-            server.quit()
-            print(f"📧 [Email Service] {log_title} sent via SMTP ({smtp_host}) to {to_email}")
-            return True
+            for port in ports_to_try:
+                server = None
+                try:
+                    if port == 465:
+                        server = smtplib.SMTP_SSL(smtp_host, 465, timeout=12)
+                    else:
+                        server = smtplib.SMTP(smtp_host, 587, timeout=12)
+                        server.starttls()
+
+                    server.login(smtp_user, smtp_password)
+                    server.sendmail(smtp_user, [to_email], msg.as_string())
+                    server.quit()
+                    print(f"📧 [Email Service] {log_title} sent via SMTP ({smtp_host}:{port}) to {to_email}")
+                    return True
+                except Exception as port_err:
+                    last_err = port_err
+                    if server:
+                        try:
+                            server.quit()
+                        except Exception:
+                            pass
+                    print(f"⚠️ [Email Service] Port {port} failed: {port_err}. Trying fallback port...")
+
+            print(f"❌ [Email Service] All SMTP attempts failed for {to_email}. Last error: {last_err}")
         except Exception as e:
             print(f"⚠️ [Email Service] SMTP dispatch error: {e}")
 
@@ -162,7 +179,7 @@ def _dispatch_email(to_email: str, subject: str, html_content: str, text_content
     if meta:
         for k, v in meta.items():
             print(f"{k}: {v}")
-    print("Notice:    To send real emails to inboxes, add SMTP_USER & SMTP_PASSWORD in backend/.env")
+    print("Notice:    Add SMTP_USER & SMTP_PASSWORD to your Render Environment to send real emails.")
     print("=" * 70 + "\n")
     return True
 
@@ -172,7 +189,11 @@ def send_password_reset_email(to_email: str, reset_token: str, user_name: Option
     Sends a CareerFit AI branded password reset email.
     Supports SMTP (Gmail, SendGrid, Brevo) or Resend API with local terminal fallback.
     """
-    frontend_url = (settings.frontend_url or "http://localhost:5173").rstrip("/")
+    raw_frontend = (settings.frontend_url or os.getenv("FRONTEND_URL") or "").rstrip("/")
+    if not raw_frontend or "localhost" in raw_frontend:
+        frontend_url = "https://frontend-nine-rouge-55.vercel.app"
+    else:
+        frontend_url = raw_frontend
     reset_url = f"{frontend_url}/reset-password?token={reset_token}"
     greeting = f"Hello {user_name}," if user_name else "Hello,"
     subject = "Reset Your CareerFit AI Password"
@@ -251,7 +272,11 @@ def send_welcome_email(to_email: str, user_name: Optional[str] = None) -> bool:
     """
     Sends a CareerFit AI branded Welcome email upon new user registration.
     """
-    frontend_url = (settings.frontend_url or "http://localhost:5173").rstrip("/")
+    raw_frontend = (settings.frontend_url or os.getenv("FRONTEND_URL") or "").rstrip("/")
+    if not raw_frontend or "localhost" in raw_frontend:
+        frontend_url = "https://frontend-nine-rouge-55.vercel.app"
+    else:
+        frontend_url = raw_frontend
     app_url = f"{frontend_url}/app/dashboard"
     greeting = f"Welcome {user_name}," if user_name else "Welcome to CareerFit AI,"
     subject = "Welcome to CareerFit AI — Your Placement Acceleration Platform!"

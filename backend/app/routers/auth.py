@@ -213,14 +213,16 @@ async def get_diagnostics():
     except Exception:
         db_status = "degraded"
 
-    has_gemini = bool(settings.gemini_api_key)
-    db_url = settings.database_url or settings.neon_database_url or os.getenv("DATABASE_URL") or ""
-    db_provider = "Neon Serverless PostgreSQL" if "neon.tech" in db_url else "Supabase PostgreSQL"
+    smtp_user = settings.smtp_user or os.getenv("SMTP_USER")
+    smtp_pw = settings.smtp_password or os.getenv("SMTP_PASSWORD")
+    smtp_status = "operational (Gmail SMTP)" if (smtp_user and smtp_pw) else "not_configured (Console Fallback)"
 
     return {
         "status": "online",
         "database": f"{db_status} ({db_provider})",
         "auth_engine": "Neon PostgreSQL + Bcrypt + JWT (Custom Auth)",
+        "email_service": smtp_status,
+        "email_sender": smtp_user or "none",
         "ai_engine": "operational" if has_gemini else "missing_key",
         "ml_classifier": "ready (100% accuracy)",
         "database_provider": db_provider,
