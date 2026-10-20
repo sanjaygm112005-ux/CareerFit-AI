@@ -157,15 +157,15 @@ const AuthModal: React.FC<Props> = ({ onClose, defaultTab = 'login' }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 select-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
       {/* Soft Frosted Backdrop */}
       <div
-        className="absolute inset-0 bg-slate-900/30 backdrop-blur-md transition-opacity duration-300"
+        className="fixed inset-0 bg-slate-900/40 backdrop-blur-md transition-opacity duration-300"
         onClick={onClose}
       />
 
       {/* 3D Perspective Wrapper */}
-      <div className="relative z-10 w-full max-w-md perspective-1200">
+      <div className="relative z-10 w-full max-w-md my-auto perspective-1200">
         
         {/* Soft Blue/Cyan Light Glow Behind Card */}
         <div
@@ -183,7 +183,7 @@ const AuthModal: React.FC<Props> = ({ onClose, defaultTab = 'login' }) => {
           onMouseMove={handleMouseMove}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className="relative bg-white/95 backdrop-blur-2xl border border-blue-100/90 rounded-3xl p-8 shadow-2xl shadow-blue-900/10 transform-style-3d transition-transform ease-out"
+          className="relative bg-white/95 backdrop-blur-2xl border border-blue-100/90 rounded-3xl p-5 sm:p-8 max-h-[92vh] overflow-y-auto shadow-2xl shadow-blue-900/10 transform-style-3d transition-transform ease-out"
           style={{
             transform: isHovered
               ? `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.015)`
@@ -414,20 +414,20 @@ const AuthModal: React.FC<Props> = ({ onClose, defaultTab = 'login' }) => {
 
               {/* Options */}
               {tab === 'login' && (
-                <div className="flex items-center justify-between text-xs pt-0.5">
-                  <label className="flex items-center gap-2 cursor-pointer text-slate-600 hover:text-slate-900">
+                <div className="flex items-center justify-between text-xs pt-1 flex-wrap gap-2">
+                  <label className="flex items-center gap-2 cursor-pointer text-slate-600 hover:text-slate-900 select-none py-1">
                     <input
                       type="checkbox"
                       checked={rememberMe}
                       onChange={e => setRememberMe(e.target.checked)}
-                      className="rounded border-slate-300 text-blue-600 focus:ring-blue-500/20 w-3.5 h-3.5"
+                      className="rounded border-slate-300 text-blue-600 focus:ring-blue-500/20 w-4 h-4 cursor-pointer"
                     />
                     <span>Remember me</span>
                   </label>
                   <button
                     type="button"
                     onClick={() => { setErrors({}); setResetSent(false); setTab('forgot'); }}
-                    className="text-blue-600 hover:text-blue-700 hover:underline font-semibold cursor-pointer"
+                    className="text-blue-600 hover:text-blue-700 active:text-blue-800 font-semibold cursor-pointer py-1.5 px-1 touch-manipulation hover:underline text-xs"
                   >
                     Forgot Password?
                   </button>

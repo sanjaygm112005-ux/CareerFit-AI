@@ -21,6 +21,25 @@ const TOKEN_KEY = 'careerfit_token';
 const USER_KEY = 'careerfit_user';
 const BASE_URL = ((import.meta.env.VITE_API_URL as string) || '/api').replace(/\/$/, '');
 
+async function parseAuthResponse(res: Response, defaultMessage: string) {
+  const contentType = res.headers.get('content-type') || '';
+  if (contentType.includes('text/html')) {
+    throw new Error('Backend server is not connected. Please ensure VITE_API_URL is configured in your hosting settings.');
+  }
+  const data = await res.json().catch(() => ({ detail: defaultMessage }));
+  if (!res.ok) {
+    throw new Error(data.detail || defaultMessage);
+  }
+  return data;
+}
+
+function handleNetworkError(err: any) {
+  if (err.message && !err.message.includes('Failed to fetch') && !err.message.includes('NetworkError')) {
+    throw err;
+  }
+  throw new Error('Unable to connect to backend server. If using Render free tier, please allow 30 seconds for it to wake up.');
+}
+
 export const authService = {
   getToken(): string | null {
     return localStorage.getItem(TOKEN_KEY);
@@ -53,71 +72,71 @@ export const authService = {
   },
 
   async login(email: string, password: string): Promise<AuthResponse> {
-    const res = await fetch(`${BASE_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await res.json().catch(() => ({ detail: 'Failed to sign in. Please try again.' }));
-    if (!res.ok) {
-      throw new Error(data.detail || 'Failed to sign in.');
+    try {
+      const res = await fetch(`${BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await parseAuthResponse(res, 'Failed to sign in. Please verify your email and password.');
+      this.setSession(data.access_token, data.user);
+      return data;
+    } catch (err: any) {
+      handleNetworkError(err);
+      throw err;
     }
-
-    this.setSession(data.access_token, data.user);
-    return data;
   },
 
   async signup(email: string, password: string, name: string): Promise<AuthResponse> {
-    const res = await fetch(`${BASE_URL}/auth/signup`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, name }),
-    });
-
-    const data = await res.json().catch(() => ({ detail: 'Failed to create account. Please try again.' }));
-    if (!res.ok) {
-      throw new Error(data.detail || 'Failed to create account.');
+    try {
+      const res = await fetch(`${BASE_URL}/auth/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, name }),
+      });
+      return await parseAuthResponse(res, 'Failed to create account.');
+    } catch (err: any) {
+      handleNetworkError(err);
+      throw err;
     }
-
-    return data;
   },
 
   async forgotPassword(email: string): Promise<{ message: string; success?: boolean }> {
-    const res = await fetch(`${BASE_URL}/auth/forgot-password`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
-
-    const data = await res.json().catch(() => ({ detail: 'Failed to send recovery email. Please try again.' }));
-    if (!res.ok) {
-      throw new Error(data.detail || 'Failed to send recovery email.');
+    try {
+      const res = await fetch(`${BASE_URL}/auth/forgot-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      return await parseAuthResponse(res, 'Failed to send recovery email.');
+    } catch (err: any) {
+      handleNetworkError(err);
+      throw err;
     }
-    return data;
   },
 
   async verifyResetToken(token: string): Promise<{ valid: boolean; email: string }> {
-    const res = await fetch(`${BASE_URL}/auth/verify-reset-token?token=${encodeURIComponent(token)}`);
-    const data = await res.json().catch(() => ({ detail: 'Reset token is invalid or expired.' }));
-    if (!res.ok) {
-      throw new Error(data.detail || 'Reset token is invalid or expired.');
+    try {
+      const res = await fetch(`${BASE_URL}/auth/verify-reset-token?token=${encodeURIComponent(token)}`);
+      return await parseAuthResponse(res, 'Reset token is invalid or expired.');
+    } catch (err: any) {
+      handleNetworkError(err);
+      throw err;
     }
-    return data;
   },
 
   async resetPassword(token: string, password: string): Promise<{ message: string; success?: boolean }> {
-    const res = await fetch(`${BASE_URL}/auth/reset-password`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token, password }),
-    });
-
-    const data = await res.json().catch(() => ({ detail: 'Failed to reset password. Please try again.' }));
-    if (!res.ok) {
-      throw new Error(data.detail || 'Failed to reset password.');
+    try {
+      const res = await fetch(`${BASE_URL}/auth/reset-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, password }),
+      });
+      return await parseAuthResponse(res, 'Failed to reset password.');
+    } catch (err: any) {
+      handleNetworkError(err);
+      throw err;
     }
-    return data;
   },
 
   async logout(): Promise<void> {
