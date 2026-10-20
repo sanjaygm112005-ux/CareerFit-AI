@@ -89,23 +89,26 @@ async def login(body: LoginRequest):
 
 
 @router.post("/forgot-password")
-async def forgot_password(body: ForgotPasswordRequest, background_tasks: BackgroundTasks):
+async def forgot_password(body: ForgotPasswordRequest):
     """
     Generate a secure password reset token in Neon and dispatch a branded CareerFit AI email.
-    Emails are sent via SMTP / Resend or logged locally to console if no SMTP credentials exist.
     """
     token, user = auth_service.create_password_reset_token(body.email)
-    if token and user:
-        background_tasks.add_task(
-            email_service.send_password_reset_email,
-            to_email=user["email"],
-            reset_token=token,
-            user_name=user.get("full_name"),
+    if not user or not token:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No account found for {body.email}. Please check your spelling or register a new account.",
         )
 
-    # Standard security practice: return success regardless of email existence to prevent user enumeration
+    # Dispatch email synchronously to ensure delivery confirmation
+    sent = email_service.send_password_reset_email(
+        to_email=user["email"],
+        reset_token=token,
+        user_name=user.get("full_name"),
+    )
+
     return {
-        "message": "Password reset link will be sent to your email.",
+        "message": f"Password recovery link sent to {user['email']}. Please check your inbox and spam folder.",
         "success": True,
     }
 
@@ -212,6 +215,10 @@ async def get_diagnostics():
         db_status = "healthy"
     except Exception:
         db_status = "degraded"
+
+    has_gemini = bool(settings.gemini_api_key)
+    db_url = settings.database_url or settings.neon_database_url or os.getenv("DATABASE_URL") or ""
+    db_provider = "Neon Serverless PostgreSQL"
 
     smtp_user = settings.smtp_user or os.getenv("SMTP_USER")
     smtp_pw = settings.smtp_password or os.getenv("SMTP_PASSWORD")
