@@ -19,7 +19,10 @@ export interface AuthResponse {
 
 const TOKEN_KEY = 'careerfit_token';
 const USER_KEY = 'careerfit_user';
-const BASE_URL = ((import.meta.env.VITE_API_URL as string) || '/api').replace(/\/$/, '');
+const BASE_URL = (
+  (import.meta.env.VITE_API_URL as string) ||
+  (import.meta.env.DEV ? '/api' : 'https://careerfit-ai-0nsp.onrender.com/api')
+).replace(/\/$/, '');
 
 async function parseAuthResponse(res: Response, defaultMessage: string) {
   const contentType = res.headers.get('content-type') || '';

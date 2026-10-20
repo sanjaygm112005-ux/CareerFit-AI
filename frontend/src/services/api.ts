@@ -1,6 +1,9 @@
 import { authService } from './auth';
 
-const BASE_URL = ((import.meta.env.VITE_API_URL as string) || '/api').replace(/\/$/, '');
+const BASE_URL = (
+  (import.meta.env.VITE_API_URL as string) ||
+  (import.meta.env.DEV ? '/api' : 'https://careerfit-ai-0nsp.onrender.com/api')
+).replace(/\/$/, '');
 
 async function getAuthHeader(): Promise<Record<string, string>> {
   const customToken = authService.getToken();
