@@ -19,6 +19,7 @@ export interface AuthResponse {
 
 const TOKEN_KEY = 'careerfit_token';
 const USER_KEY = 'careerfit_user';
+const BASE_URL = ((import.meta.env.VITE_API_URL as string) || '/api').replace(/\/$/, '');
 
 export const authService = {
   getToken(): string | null {
@@ -52,7 +53,7 @@ export const authService = {
   },
 
   async login(email: string, password: string): Promise<AuthResponse> {
-    const res = await fetch('/api/auth/login', {
+    const res = await fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -68,7 +69,7 @@ export const authService = {
   },
 
   async signup(email: string, password: string, name: string): Promise<AuthResponse> {
-    const res = await fetch('/api/auth/signup', {
+    const res = await fetch(`${BASE_URL}/auth/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, name }),
@@ -83,7 +84,7 @@ export const authService = {
   },
 
   async forgotPassword(email: string): Promise<{ message: string; success?: boolean }> {
-    const res = await fetch('/api/auth/forgot-password', {
+    const res = await fetch(`${BASE_URL}/auth/forgot-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
@@ -97,7 +98,7 @@ export const authService = {
   },
 
   async verifyResetToken(token: string): Promise<{ valid: boolean; email: string }> {
-    const res = await fetch(`/api/auth/verify-reset-token?token=${encodeURIComponent(token)}`);
+    const res = await fetch(`${BASE_URL}/auth/verify-reset-token?token=${encodeURIComponent(token)}`);
     const data = await res.json().catch(() => ({ detail: 'Reset token is invalid or expired.' }));
     if (!res.ok) {
       throw new Error(data.detail || 'Reset token is invalid or expired.');
@@ -106,7 +107,7 @@ export const authService = {
   },
 
   async resetPassword(token: string, password: string): Promise<{ message: string; success?: boolean }> {
-    const res = await fetch('/api/auth/reset-password', {
+    const res = await fetch(`${BASE_URL}/auth/reset-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token, password }),
@@ -121,7 +122,7 @@ export const authService = {
 
   async logout(): Promise<void> {
     try {
-      await fetch('/api/auth/logout', { method: 'POST' });
+      await fetch(`${BASE_URL}/auth/logout`, { method: 'POST' });
     } catch {
       // Ignore network errors on logout
     } finally {
