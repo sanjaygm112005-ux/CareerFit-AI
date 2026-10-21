@@ -49,7 +49,7 @@ class UserProfile(BaseModel):
 # ── Resume Analysis ───────────────────────────────────────────────────────────
 
 class JobMatchRequest(BaseModel):
-    resume_id: str
+    resume_id: Optional[str] = None
     job_description: str
 
 

@@ -1,11 +1,11 @@
 import { authService } from './auth';
 
-const BASE_URL = (
+export const BASE_URL = (
   (import.meta.env.VITE_API_URL as string) ||
   (import.meta.env.DEV ? '/api' : 'https://careerfit-ai-0nsp.onrender.com/api')
 ).replace(/\/$/, '');
 
-async function getAuthHeader(): Promise<Record<string, string>> {
+export async function getAuthHeader(): Promise<Record<string, string>> {
   const customToken = authService.getToken();
   if (customToken) {
     return { Authorization: `Bearer ${customToken}` };
@@ -69,14 +69,14 @@ export async function getResumeAnalysis(resumeId: string): Promise<{
 }
 
 export async function analyzeJobMatch(
-  resumeId: string,
+  resumeId: string | null | undefined,
   jobDescription: string
 ): Promise<{ match_id: string; result: JobMatchResult }> {
   const headers = await getAuthHeader();
   const res = await fetch(`${BASE_URL}/job/analyze`, {
     method: 'POST',
     headers: { ...headers, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ resume_id: resumeId, job_description: jobDescription }),
+    body: JSON.stringify({ resume_id: resumeId || undefined, job_description: jobDescription }),
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ detail: 'Job match failed' }));
@@ -86,30 +86,33 @@ export async function analyzeJobMatch(
 }
 
 export async function getCompanyRecommendations(
-  resumeId: string
+  resumeId?: string | null
 ): Promise<{ recommendations: CompanyRecommendation[] }> {
   const headers = await getAuthHeader();
-  const res = await fetch(`${BASE_URL}/job/companies/recommendations?resume_id=${resumeId}`, {
-    headers,
-  });
+  const url = resumeId
+    ? `${BASE_URL}/job/companies/recommendations?resume_id=${encodeURIComponent(resumeId)}`
+    : `${BASE_URL}/job/companies/recommendations`;
+  const res = await fetch(url, { headers });
   if (!res.ok) throw new Error('Failed to fetch recommendations');
   return res.json();
 }
 
-export async function getLiveJobs(resumeId: string): Promise<{ jobs: LiveJob[] }> {
+export async function getLiveJobs(resumeId?: string | null): Promise<{ jobs: LiveJob[] }> {
   const headers = await getAuthHeader();
-  const res = await fetch(`${BASE_URL}/job/live-search?resume_id=${resumeId}`, {
-    headers,
-  });
+  const url = resumeId
+    ? `${BASE_URL}/job/live-search?resume_id=${encodeURIComponent(resumeId)}`
+    : `${BASE_URL}/job/live-search`;
+  const res = await fetch(url, { headers });
   if (!res.ok) throw new Error('Failed to fetch live jobs');
   return res.json();
 }
 
-export async function getPlacementEligibility(resumeId: string): Promise<PlacementEligibilityResult> {
+export async function getPlacementEligibility(resumeId?: string | null): Promise<PlacementEligibilityResult> {
   const headers = await getAuthHeader();
-  const res = await fetch(`${BASE_URL}/job/placement-eligibility?resume_id=${resumeId}`, {
-    headers,
-  });
+  const url = resumeId
+    ? `${BASE_URL}/job/placement-eligibility?resume_id=${encodeURIComponent(resumeId)}`
+    : `${BASE_URL}/job/placement-eligibility`;
+  const res = await fetch(url, { headers });
   if (!res.ok) throw new Error('Failed to fetch placement eligibility');
   return res.json();
 }

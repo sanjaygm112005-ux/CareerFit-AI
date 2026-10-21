@@ -99,6 +99,16 @@ class TableQuery:
                     pass
                 if attempt == max_attempts - 1:
                     raise conn_err
+            except psycopg2.DataError as data_err:
+                # E.g. invalid UUID syntax queried against a UUID column -> cannot match any rows
+                try:
+                    conn.rollback()
+                    self.pool.putconn(conn)
+                except Exception:
+                    pass
+                if self._action == "SELECT":
+                    return QueryResult([])
+                raise data_err
             except Exception:
                 try:
                     conn.rollback()
