@@ -295,12 +295,12 @@ const Interview: React.FC = () => {
   }
 
   return (
-    <div className="max-w-5xl mx-auto h-[calc(100vh-6rem)] flex gap-6 pb-6 animate-fade-in">
+    <div className="max-w-5xl mx-auto min-h-[calc(100dvh-7.5rem)] md:h-[calc(100vh-6rem)] flex flex-col md:flex-row gap-4 md:gap-6 pb-6 animate-fade-in">
       
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden relative">
+      <div className="flex-1 flex flex-col bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden relative min-h-[420px]">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between gap-2">
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isSpeaking ? 'bg-brand-500 animate-pulse shadow-lg shadow-brand-500/40' : 'bg-brand-500'}`}>
               <Bot className="text-white" size={20} />
@@ -401,9 +401,9 @@ const Interview: React.FC = () => {
         </div>
       </div>
 
-      {/* Right Sidebar - Video Feed */}
-      <div className="w-72 flex flex-col gap-6">
-        <div className="bg-slate-900 rounded-2xl overflow-hidden shadow-sm relative border-4 border-slate-900 h-48">
+      {/* Video Feed Section */}
+      <div className="w-full md:w-72 flex flex-col sm:flex-row md:flex-col gap-4 md:gap-6 shrink-0">
+        <div className="bg-slate-900 rounded-2xl overflow-hidden shadow-sm relative border-4 border-slate-900 h-44 sm:h-48">
            <video 
              ref={videoRef} 
              autoPlay 

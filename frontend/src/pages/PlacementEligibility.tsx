@@ -196,23 +196,23 @@ const PlacementEligibility: React.FC = () => {
       )}
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-        <div className="flex items-center gap-4">
-          <div className="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
-            <GraduationCap className="text-white" size={28} />
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 mb-8">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/20 shrink-0">
+            <GraduationCap className="text-white" size={26} />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">Placement Engine</h1>
-            <p className="text-slate-500 mt-1">See exactly where you stand for campus recruitment across different company tiers.</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Placement Engine</h1>
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">See exactly where you stand for campus recruitment across different company tiers.</p>
           </div>
         </div>
         
-        <div className="bg-white px-6 py-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-5">
+        <div className="bg-white px-5 py-3 sm:px-6 sm:py-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between sm:justify-start gap-5">
           <div>
-            <p className="text-sm font-bold text-slate-400 uppercase">Overall Readiness</p>
-            <p className={`text-3xl font-black ${scoreColor}`}>{data.overall_readiness_score}/100</p>
+            <p className="text-xs sm:text-sm font-bold text-slate-400 uppercase">Overall Readiness</p>
+            <p className={`text-2xl sm:text-3xl font-black ${scoreColor}`}>{data.overall_readiness_score}/100</p>
           </div>
-          <ProgressRing score={data.overall_readiness_score} size={64} strokeWidth={6} hideLabel color={data.overall_readiness_score >= 80 ? '#10b981' : data.overall_readiness_score >= 50 ? '#3b82f6' : '#f59e0b'} />
+          <ProgressRing score={data.overall_readiness_score} size={58} strokeWidth={6} hideLabel color={data.overall_readiness_score >= 80 ? '#10b981' : data.overall_readiness_score >= 50 ? '#3b82f6' : '#f59e0b'} />
         </div>
       </div>
 

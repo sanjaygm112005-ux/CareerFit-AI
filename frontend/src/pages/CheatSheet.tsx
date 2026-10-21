@@ -96,26 +96,26 @@ const CheatSheet: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto py-8 animate-fade-in">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 shrink-0">
             <FileText className="text-white" size={22} />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Interview Cheat Sheet</h1>
-            <p className="text-slate-500 text-sm">AI-generated Q&A tailored to your resume</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Interview Cheat Sheet</h1>
+            <p className="text-slate-500 text-xs sm:text-sm">AI-generated Q&A tailored to your resume</p>
           </div>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 w-full sm:w-auto">
           {cheatSheet && (
-            <button onClick={handleDownload} disabled={downloading} className="btn-secondary flex items-center gap-2 text-sm">
+            <button onClick={handleDownload} disabled={downloading} className="btn-secondary flex items-center justify-center gap-2 text-sm w-full sm:w-auto cursor-pointer">
               {downloading ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
-              Download PDF
+              <span>Download PDF</span>
             </button>
           )}
-          <button onClick={handleGenerate} disabled={loading} className="btn-primary flex items-center gap-2 text-sm">
+          <button onClick={handleGenerate} disabled={loading} className="btn-primary flex items-center justify-center gap-2 text-sm w-full sm:w-auto cursor-pointer">
             {loading ? <Loader2 size={16} className="animate-spin" /> : <FileText size={16} />}
-            {cheatSheet ? 'Regenerate' : 'Generate Cheat Sheet'}
+            <span>{cheatSheet ? 'Regenerate' : 'Generate Cheat Sheet'}</span>
           </button>
         </div>
       </div>

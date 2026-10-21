@@ -208,10 +208,10 @@ export const Admin: React.FC = () => {
       </div>
 
       {/* Tabs Bar */}
-      <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+      <div className="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto no-scrollbar py-1">
         <button
           onClick={() => setActiveTab('companies')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm transition-all ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm transition-all shrink-0 whitespace-nowrap cursor-pointer ${
             activeTab === 'companies'
               ? 'bg-blue-600 text-white shadow-sm'
               : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
@@ -222,7 +222,7 @@ export const Admin: React.FC = () => {
         </button>
         <button
           onClick={() => setActiveTab('requirements')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm transition-all ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm transition-all shrink-0 whitespace-nowrap cursor-pointer ${
             activeTab === 'requirements'
               ? 'bg-blue-600 text-white shadow-sm'
               : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'

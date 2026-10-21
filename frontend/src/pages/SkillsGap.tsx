@@ -67,23 +67,23 @@ const SkillsGap: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm mb-8">
-        <label className="block text-sm font-medium text-slate-700 mb-2">What role are you aiming for?</label>
-        <div className="flex gap-4">
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm mb-8">
+        <label className="block text-sm font-semibold text-slate-700 mb-2">What role are you aiming for?</label>
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <input
             type="text"
             placeholder="e.g. Senior Frontend Developer, Data Scientist, Product Manager"
             value={targetRole}
             onChange={(e) => setTargetRole(e.target.value)}
-            className="input-field flex-1 text-lg"
+            className="input-field flex-1 text-base sm:text-lg"
           />
           <button
             onClick={handleGenerate}
             disabled={loading || !resumeId}
-            className="btn-primary flex items-center gap-2"
+            className="btn-primary flex items-center justify-center gap-2 w-full sm:w-auto shrink-0 cursor-pointer py-3"
           >
             {loading ? <Loader2 size={18} className="animate-spin" /> : <Sparkles size={18} />}
-            Analyze Gap
+            <span>Analyze Gap</span>
           </button>
         </div>
         {!resumeId && (

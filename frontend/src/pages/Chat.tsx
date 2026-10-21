@@ -54,24 +54,24 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto h-[calc(100vh-6rem)] flex flex-col bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden animate-fade-in">
-      <div className="p-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+    <div className="max-w-4xl mx-auto h-[calc(100dvh-7.5rem)] md:h-[calc(100vh-6rem)] flex flex-col bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden animate-fade-in">
+      <div className="p-3.5 sm:p-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+          <h1 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
             <Bot className="text-brand-500" />
             AI Career Coach
           </h1>
-          <p className="text-sm text-slate-500">Ask about your career, interviews, or resume advice.</p>
+          <p className="text-xs sm:text-sm text-slate-500">Ask about your career, interviews, or resume advice.</p>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-6 bg-slate-50/50">
+      <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 sm:space-y-6 bg-slate-50/50">
         {messages.map((msg, idx) => (
-          <div key={idx} className={`flex gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
+          <div key={idx} className={`flex gap-3 sm:gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
             <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.role === 'user' ? 'bg-brand-500 text-white' : 'bg-slate-200 text-slate-700'}`}>
               {msg.role === 'user' ? <User size={18} /> : <Bot size={18} />}
             </div>
-            <div className={`max-w-[75%] px-5 py-3 rounded-2xl shadow-sm ${msg.role === 'user' ? 'bg-brand-500 text-white rounded-tr-none' : 'bg-white border border-slate-200 text-slate-800 rounded-tl-none'}`}>
+            <div className={`max-w-[85%] sm:max-w-[75%] px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl shadow-sm ${msg.role === 'user' ? 'bg-brand-500 text-white rounded-tr-none' : 'bg-white border border-slate-200 text-slate-800 rounded-tl-none'}`}>
               <p className="whitespace-pre-wrap leading-relaxed text-sm md:text-base">{msg.content}</p>
             </div>
           </div>

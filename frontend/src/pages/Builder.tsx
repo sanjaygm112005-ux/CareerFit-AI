@@ -300,26 +300,31 @@ const Builder: React.FC = () => {
 
       {step === 3 && generatedMarkdown && (
         <div className="animate-fade-in">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div className="flex items-center gap-2 text-emerald-600">
-              <CheckCircle2 size={24} />
-              <span className="font-semibold text-lg">Your Resume is Ready!</span>
+              <CheckCircle2 size={24} className="shrink-0" />
+              <span className="font-semibold text-base sm:text-lg">Your Resume is Ready!</span>
             </div>
-            <button onClick={handleDownloadPDF} className="btn-primary">
+            <button onClick={handleDownloadPDF} className="btn-primary w-full sm:w-auto justify-center">
               <Download size={18} /> Download PDF
             </button>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 flex justify-center">
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-3 sm:p-8 overflow-x-auto flex justify-center">
             <style>{`
               #resume-preview-content {
                 font-family: 'Times New Roman', Times, serif;
                 color: #000;
                 width: 100%;
-                max-w: 800px;
-                padding: 40px;
+                max-width: 800px;
+                padding: 20px;
                 background: white;
                 box-shadow: 0 0 10px rgba(0,0,0,0.05);
+              }
+              @media (min-width: 640px) {
+                #resume-preview-content {
+                  padding: 40px;
+                }
               }
               #resume-preview-content h1 {
                 text-align: center;

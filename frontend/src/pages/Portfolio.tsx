@@ -118,44 +118,44 @@ const Portfolio: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 py-10 animate-fade-in relative">
       {/* Top Banner */}
-      <div className="sticky top-0 left-0 w-full bg-slate-900 text-white py-3 px-6 flex justify-between items-center z-20 shadow-md">
+      <div className="sticky top-0 left-0 w-full bg-slate-900 text-white py-3 px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 z-20 shadow-md">
         <div className="flex items-center gap-2">
-          <Globe size={18} className="text-indigo-400" />
-          <span className="font-semibold text-sm">
+          <Globe size={18} className="text-indigo-400 shrink-0" />
+          <span className="font-semibold text-xs sm:text-sm">
             {isDemo ? 'Portfolio Preview (Sample Data)' : 'Your AI Generated Portfolio Website'}
           </span>
           {isDemo && (
-            <span className="bg-amber-500/20 text-amber-300 text-xs px-2 py-0.5 rounded-full border border-amber-500/30">
-              Demo Mode
+            <span className="bg-amber-500/20 text-amber-300 text-[10px] sm:text-xs px-2 py-0.5 rounded-full border border-amber-500/30">
+              Demo
             </span>
           )}
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-end">
           {isDemo && (
             <button
               onClick={() => navigate('/app/upload')}
-              className="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5"
+              className="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-2.5 sm:px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
             >
-              <Upload size={14} /> Upload Your Resume
+              <Upload size={14} /> <span>Upload Resume</span>
             </button>
           )}
           <button
             onClick={() => toast.success('Portfolio link ready to publish!')}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center gap-2 cursor-pointer"
           >
-            <ExternalLink size={16} /> Publish &amp; Share
+            <ExternalLink size={15} /> <span>Publish &amp; Share</span>
           </button>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto mt-8 bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
+      <div className="max-w-4xl mx-auto mt-4 sm:mt-8 bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden border border-slate-100">
         {/* Header / Hero Section */}
-        <div className="bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 px-10 py-20 text-center relative overflow-hidden">
+        <div className="bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 px-5 sm:px-10 py-12 sm:py-20 text-center relative overflow-hidden">
           <div className="relative z-10">
-            <h1 className="text-5xl font-extrabold text-white mb-4 tracking-tight">
+            <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-3 sm:mb-4 tracking-tight">
               {portfolio.name}
             </h1>
-            <p className="text-xl text-indigo-200 max-w-2xl mx-auto font-light leading-relaxed">
+            <p className="text-base sm:text-xl text-indigo-200 max-w-2xl mx-auto font-light leading-relaxed">
               {portfolio.tagline}
             </p>
             <div className="flex justify-center gap-4 mt-8">

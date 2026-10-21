@@ -161,29 +161,29 @@ const JobTracker: React.FC = () => {
       {showModal && <AddJobModal onClose={() => setShowModal(false)} onAdd={handleAdd} />}
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 shrink-0">
             <Briefcase className="text-white" size={22} />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Job Application Tracker</h1>
-            <p className="text-slate-500 text-sm">{jobs.length} job{jobs.length !== 1 ? 's' : ''} being tracked</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Job Application Tracker</h1>
+            <p className="text-slate-500 text-xs sm:text-sm">{jobs.length} job{jobs.length !== 1 ? 's' : ''} being tracked</p>
           </div>
         </div>
-        <button onClick={() => setShowModal(true)} className="btn-primary flex items-center gap-2 text-sm">
+        <button onClick={() => setShowModal(true)} className="btn-primary flex items-center justify-center gap-2 text-sm w-full sm:w-auto cursor-pointer">
           <Plus size={16} /> Add Job
         </button>
       </div>
 
       {/* Stats row */}
-      <div className="grid grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4 mb-6 sm:mb-8">
         {COLUMNS.map(col => {
           const count = jobs.filter(j => j.status === col.key).length;
           return (
-            <div key={col.key} className={`glass-card p-4 text-center border ${col.border}`}>
-              <p className={`text-2xl font-bold ${col.color}`}>{count}</p>
-              <p className="text-xs text-slate-500 mt-1 font-medium">{col.label}</p>
+            <div key={col.key} className={`glass-card p-3 sm:p-4 text-center border ${col.border}`}>
+              <p className={`text-xl sm:text-2xl font-bold ${col.color}`}>{count}</p>
+              <p className="text-[11px] sm:text-xs text-slate-500 mt-1 font-medium truncate">{col.label}</p>
             </div>
           );
         })}

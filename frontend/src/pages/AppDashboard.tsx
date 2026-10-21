@@ -70,23 +70,23 @@ const AppDashboard: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto py-8 animate-fade-in">
+    <div className="max-w-6xl mx-auto py-3 sm:py-8 animate-fade-in">
       {/* Greeting */}
-      <div className="mb-10 flex items-center justify-between">
+      <div className="mb-6 sm:mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 mb-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-1">
             Welcome back, <span className="text-gradient">{name}</span> 👋
           </h1>
-          <p className="text-slate-600">Here is your career progression overview.</p>
+          <p className="text-sm sm:text-base text-slate-600">Here is your career progression overview.</p>
         </div>
-        <button onClick={() => navigate('/app/upload')} className="btn-primary py-3 px-6 flex items-center gap-2 shadow-lg shadow-brand-500/20 hover:scale-105 transition-transform">
+        <button onClick={() => navigate('/app/upload')} className="btn-primary py-2.5 sm:py-3 px-5 sm:px-6 flex items-center justify-center gap-2 shadow-lg shadow-brand-500/20 hover:scale-105 transition-transform w-full sm:w-auto cursor-pointer">
           <Upload size={18} />
-          New Resume
+          <span>New Resume</span>
         </button>
       </div>
 
       {/* Action cards */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-8 sm:mb-12">
         {cards.map(c => (
           <div
             key={c.title}

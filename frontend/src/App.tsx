@@ -28,11 +28,12 @@ import Admin from './pages/Admin';
 import MLEvaluation from './pages/MLEvaluation';
 import ResetPassword from './pages/ResetPassword';
 import Settings from './pages/Settings';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Menu, Zap } from 'lucide-react';
 
 // Protected layout with sidebar
 const AppLayout: React.FC = () => {
   const { loading } = useAuth();
+  const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen">
@@ -41,9 +42,41 @@ const AppLayout: React.FC = () => {
   );
   
   return (
-    <div className="flex min-h-screen bg-slate-50">
-      <Sidebar />
-      <main className="flex-1 overflow-y-auto px-4 md:px-8 py-6">
+    <div className="flex flex-col md:flex-row min-h-screen bg-slate-50 overflow-x-hidden">
+      {/* Mobile Topbar with Left Upper Corner Sidebar Button */}
+      <header className="md:hidden sticky top-0 z-40 flex items-center justify-between px-4 py-3 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setMobileSidebarOpen(true)}
+            className="p-2 -ml-1 text-slate-700 hover:text-blue-600 hover:bg-slate-100 rounded-xl transition-all duration-200 active:scale-95 focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 cursor-pointer"
+            aria-label="Open sidebar menu"
+          >
+            <Menu size={22} className="stroke-[2.5]" />
+          </button>
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white shadow-xs">
+              <Zap size={14} />
+            </div>
+            <span className="font-bold text-slate-900 text-sm tracking-tight">
+              CareerFit <span className="text-blue-600">AI</span>
+            </span>
+          </div>
+        </div>
+
+        <button
+          onClick={() => setMobileSidebarOpen(true)}
+          className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100/70 border border-blue-200/60 rounded-lg transition-colors cursor-pointer"
+        >
+          <span>Features</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
+        </button>
+      </header>
+
+      {/* Sidebar with mobile drawer support */}
+      <Sidebar mobileOpen={mobileSidebarOpen} onClose={() => setMobileSidebarOpen(false)} />
+
+      {/* Main Content Area */}
+      <main className="flex-1 w-full max-w-full overflow-x-hidden px-3 sm:px-6 md:px-8 py-4 md:py-6">
         <Outlet />
       </main>
     </div>

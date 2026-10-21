@@ -204,8 +204,8 @@ const AptitudeTest: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm mb-6">
-        <h2 className="text-xl font-medium text-slate-800 mb-8 leading-relaxed">
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-8 shadow-sm mb-6">
+        <h2 className="text-lg sm:text-xl font-medium text-slate-800 mb-6 sm:mb-8 leading-relaxed">
           {q.question}
         </h2>
         
