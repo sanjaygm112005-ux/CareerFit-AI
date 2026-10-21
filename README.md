@@ -16,7 +16,7 @@
 3. [Core Feature Breakdown](#-core-feature-breakdown)
 4. [Technology Stack](#-technology-stack)
 5. [Database Architecture (Neon PostgreSQL)](#-database-architecture-neon-postgresql)
-6. [System Flowchart](#-system-flowchart)
+6. [System Flowcharts](#-system-flowcharts)
 7. [Getting Started & Installation](#-getting-started--installation)
 8. [API Endpoints Reference](#-api-endpoints-reference)
 9. [Verification & System Health](#-verification--system-health)
@@ -36,40 +36,25 @@
 
 ## 🧠 Hybrid Intelligence Architecture
 
-```
-                    ┌────────────────────────────────────────────────────────┐
-                    │                   Candidate Profile                    │
-                    │         (Uploaded Resume / Voice AI Builder)           │
-                    └──────────────────────────┬─────────────────────────────┘
-                                               │
-                       ┌───────────────────────┴───────────────────────┐
-                       ▼                                               ▼
-     ┌───────────────────────────────────┐           ┌───────────────────────────────────┐
-     │      Scikit-Learn ML Engine       │           │     Rule-Based Placement Engine   │
-     │ ───────────────────────────────── │           │ ───────────────────────────────── │
-     │ • SVM Multi-Class Domain Classifier│          │ • Strict Recruiter Cutoffs (CGPA) │
-     │ • TF-IDF Vectorization            │           │ • Branch & Backlog Eligibility    │
-     │ • Cosine Similarity Scoring       │           │ • Mandatory Skills Matrix Match   │
-     │ • NLP Regex Skill Extractor       │           │ • Transparent Rejection / Pass    │
-     └─────────────────┬─────────────────┘           └─────────────────┬─────────────────┘
-                       │                                               │
-                       └───────────────────────┬───────────────────────┘
-                                               │
-                                               ▼
-                             ┌───────────────────────────────────┐
-                             │    Generative AI Copilot (Gemini) │
-                             │ ───────────────────────────────── │
-                             │ • Interactive Mock Interviewer    │
-                             │ • Real-time ATS Resume Optimizer  │
-                             │ • Tailored Cover Letter Engine    │
-                             │ • 1/3/5-Year Career Roadmap       │
-                             └─────────────────┬─────────────────┘
-                                               │
-                                               ▼
-                             ┌───────────────────────────────────┐
-                             │     Neon Serverless PostgreSQL    │
-                             │     & Vite/React 3D UI Dashboard  │
-                             └───────────────────────────────────┘
+```mermaid
+flowchart TD
+    classDef profile fill:#2563eb,stroke:#1d4ed8,stroke-width:2px,color:#fff
+    classDef ml fill:#ea580c,stroke:#c2410c,stroke-width:2px,color:#fff
+    classDef rules fill:#0284c7,stroke:#0369a1,stroke-width:2px,color:#fff
+    classDef ai fill:#7c3aed,stroke:#6d28d9,stroke-width:2px,color:#fff
+    classDef storage fill:#00e599,stroke:#009668,stroke-width:2px,color:#000
+    classDef ui fill:#3b82f6,stroke:#1d4ed8,stroke-width:2px,color:#fff
+
+    Candidate["Candidate Profile<br/>(Uploaded Resume PDF/DOCX or Voice AI Builder)"]:::profile
+
+    Candidate -->|"Feature Extraction"| ML["Scikit-Learn ML Engine<br/>• SVM Multi-Class Domain Classifier<br/>• TF-IDF Vectorization<br/>• Cosine Similarity Scoring"]:::ml
+    Candidate -->|"Academic Record & Criteria"| Rules["Rule-Based Placement Engine<br/>• Strict Recruiter Cutoffs (CGPA & Backlogs)<br/>• Branch Clearance Verification<br/>• Mandatory Skill Thresholds"]:::rules
+
+    ML -->|"Domain Vector & Skill Density"| Gemini["Generative AI Copilot (Gemini 1.5 Flash)<br/>• Contextual Mock Interview Questions<br/>• Real-Time ATS Optimization<br/>• Tailored Cover Letters & 5-Year Roadmaps"]:::ai
+    Rules -->|"Tier Eligibility Audit & Gaps"| Gemini
+
+    Gemini -->|"Structured Results"| NeonDB[("Neon Serverless PostgreSQL<br/>Connection Pooling & Schema Persistence")]:::storage
+    NeonDB -->|"Real-Time Analytics"| Dashboard["Vite + React 18 User Interface<br/>(Desktop & Mobile Responsive)"]:::ui
 ```
 
 ---
@@ -160,36 +145,106 @@ The relational schema is hosted on **Neon Serverless PostgreSQL** and includes t
 
 ---
 
-## 📐 System Flowchart
+## 📐 System Flowcharts
+
+### 1. End-to-End User Experience & Feature Lifecycle Flowchart
+This flowchart illustrates how a candidate navigates through CareerFit AI: from account creation and resume parsing to ATS scoring, placement eligibility clearance, interactive video mock interview, and live recruiter job matching.
 
 ```mermaid
 flowchart TD
-    %% Styling
-    classDef frontend fill:#3b82f6,stroke:#1d4ed8,stroke-width:2px,color:#fff
-    classDef backend fill:#10b981,stroke:#047857,stroke-width:2px,color:#fff
-    classDef ai fill:#8b5cf6,stroke:#5b21b6,stroke-width:2px,color:#fff
+    classDef startNode fill:#2563eb,stroke:#1d4ed8,stroke-width:2px,color:#fff
+    classDef processNode fill:#0284c7,stroke:#0369a1,stroke-width:1.5px,color:#fff
+    classDef decisionNode fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
+    classDef aiNode fill:#7c3aed,stroke:#6d28d9,stroke-width:1.5px,color:#fff
+    classDef successNode fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+
+    Start(["Candidate Lands on CareerFit AI"]) --> Auth{"Authenticated?"}:::decisionNode
+    
+    Auth -- "No" --> AuthFlow["Sign In / Sign Up / Password Reset<br/>(Neon auth.users + bcrypt)"]:::processNode
+    Auth -- "Yes" --> Dashboard["Student Dashboard & Sidebar"]:::processNode
+    AuthFlow --> Dashboard
+
+    Dashboard --> F1["Resume Upload & Text Extraction<br/>(pdfminer / docx)"]:::processNode
+    Dashboard --> F2["AI Mock Interviewer<br/>(Camera / Mic / STAR Evaluation)"]:::aiNode
+    Dashboard --> F3["Campus Placement Engine<br/>(Tier 1 / 2 / 3 Eligibility)"]:::processNode
+    Dashboard --> F4["Companies & Live Job Matching<br/>(Real-Time Job Board)"]:::processNode
+    Dashboard --> F5["ML Evaluation & Diagnostics<br/>(SVM Metrics & Confusion Matrix)"]:::processNode
+
+    F1 --> ATS["ATS Score & Keyword Gap Analysis"]:::processNode
+    ATS --> Rewrite["1-Click AI Resume Optimizer<br/>(LaTeX Style + Direct PDF Download)"]:::aiNode
+
+    F2 --> MediaCheck{"Camera & Mic Available?"}:::decisionNode
+    MediaCheck -- "Yes" --> VideoAudio["Live Selfie PIP Preview + Voice Dictation"]:::aiNode
+    MediaCheck -- "No" --> AudioText["Graceful Audio & Text Mode"]:::processNode
+    VideoAudio --> Scorecard["Behavioral & Technical Scorecard<br/>(Confidence, Composure, Speaking Tone)"]:::successNode
+    AudioText --> Scorecard
+
+    F3 --> RecruiterCutoff["Evaluate Recruiter Cutoffs<br/>(Minimum CGPA, Backlogs, Branch, Skills)"]:::processNode
+    RecruiterCutoff --> TierPass{"Meets Cutoff?"}:::decisionNode
+    TierPass -- "Cleared" --> Eligible["Eligible Recruiter Matches<br/>(Google, Microsoft, Amazon, TCS, Infosys)"]:::successNode
+    TierPass -- "Gaps Found" --> GapReport["Transparent Gap Analysis & Skill Roadmap"]:::processNode
+
+    F4 --> LiveFeed["Matched Live Openings + 1-Click LinkedIn Apply"]:::successNode
+
+    Scorecard --> PlacementReady(["Placement-Ready Engineer"]):::successNode
+    Eligible --> PlacementReady
+    LiveFeed --> PlacementReady
+```
+
+---
+
+### 2. Full-Stack Architecture & Data Request Flowchart
+This flowchart details the physical request lifecycle between the client, backend API, machine learning services, generative AI copilot, and Neon Serverless PostgreSQL.
+
+```mermaid
+flowchart LR
+    classDef client fill:#3b82f6,stroke:#1d4ed8,stroke-width:2px,color:#fff
+    classDef api fill:#059669,stroke:#047857,stroke-width:2px,color:#fff
+    classDef ml fill:#ea580c,stroke:#c2410c,stroke-width:2px,color:#fff
+    classDef llm fill:#7c3aed,stroke:#6d28d9,stroke-width:2px,color:#fff
     classDef db fill:#00e599,stroke:#009668,stroke-width:2px,color:#000
 
-    User((Candidate / Admin)) --> UI[React 18 Frontend - Vite]:::frontend
-    
-    UI --> |Upload Resume / Pasted Text| FastAPI[FastAPI Backend - Port 8000]:::backend
-    
-    FastAPI --> |Extract Text| Parser[pdfminer.six / python-docx]:::backend
-    
-    Parser --> ML[Scikit-Learn SVM & TF-IDF]:::backend
-    ML --> |Vectorized Scores & Domain| LogicEngine[Placement Rules Engine]:::backend
-    
-    LogicEngine --> |Compare Cutoffs| NeonDB[(Neon Serverless PostgreSQL)]:::db
-    
-    FastAPI --> |Deep Analysis & Mock Interview| Gemini[Google Gemini 1.5 Flash]:::ai
-    
-    NeonDB --> |Persist Analyses, Recruiters & History| FastAPI
-    FastAPI --> |Unified JSON Response| UI
-    
-    UI --> Dash[Dashboard & ATS Score]:::frontend
-    UI --> Placement[Placement Engine & Admin CRUD]:::frontend
-    UI --> MLEval[ML Accuracy & Confusion Matrix]:::frontend
-    UI --> Settings[Cloud Diagnostics & Profile]:::frontend
+    subgraph ClientApp ["Client Layer (Desktop & Mobile)"]
+        ReactApp["React 18 + Vite Web App"]:::client
+        TailwindUI["Tailwind CSS + Glassmorphism UI"]:::client
+        MediaAPIs["Webcam MediaStream + Web Speech API"]:::client
+    end
+
+    subgraph BackendGateway ["API Gateway & Controller (FastAPI)"]
+        Uvicorn["FastAPI ASGI Server (Port 8000)"]:::api
+        DocParser["Document Extractor (pdfminer / python-docx)"]:::api
+        AuthJWT["Stateless JWT Auth & Password Hashing"]:::api
+    end
+
+    subgraph IntelligenceEngine ["Hybrid Intelligence Pipelines"]
+        SVM["Scikit-Learn SVM (Career Domain Classifier)"]:::ml
+        TFIDF["TF-IDF Vectorizer & Cosine Similarity"]:::ml
+        RulesEngine["Deterministic Placement Rules Engine"]:::ml
+        Gemini["Google Gemini 1.5 Flash (Generative AI)"]:::llm
+    end
+
+    subgraph DatabaseLayer ["Persistence & Cloud Storage"]
+        NeonDB[("Neon Serverless PostgreSQL<br/>(psycopg2 Connection Pooling)")]:::db
+    end
+
+    ClientApp -->|"REST Requests (Bearer JWT)"| Uvicorn
+    Uvicorn --> DocParser
+    Uvicorn --> AuthJWT
+
+    DocParser -->|"Parsed Text"| SVM
+    DocParser -->|"Resume Vector"| TFIDF
+    SVM -->|"Domain Track"| RulesEngine
+    TFIDF -->|"Skill Matrix"| RulesEngine
+
+    Uvicorn -->|"Prompt Context"| Gemini
+    Gemini -->|"Interview Questions & ATS Rewrites"| Uvicorn
+
+    RulesEngine -->|"Recruiter Cutoffs Query"| NeonDB
+    AuthJWT -->|"User Records & Reset Tokens"| NeonDB
+    Uvicorn -->|"Store Analyses & Job Tracker"| NeonDB
+
+    NeonDB -->|"Relational Data Results"| Uvicorn
+    Uvicorn -->|"Unified JSON Response"| ClientApp
 ```
 
 ---
