@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 660" width="100%" height="100%" style="background:#0b0f19; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f19" />
+      <stop offset="50%" stop-color="#111827" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+
+    <linearGradient id="blueNode" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+
+    <linearGradient id="orangeNode" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ea580c" />
+      <stop offset="100%" stop-color="#c2410c" />
+    </linearGradient>
+
+    <linearGradient id="tealNode" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f766e" />
+      <stop offset="100%" stop-color="#115e59" />
+    </linearGradient>
+
+    <linearGradient id="purpleNode" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#6d28d9" />
+    </linearGradient>
+
+    <linearGradient id="greenNode" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+
+    <filter id="shadow2" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+
+    <marker id="arrowB" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#60a5fa" />
+    </marker>
+    <marker id="arrowP" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#c084fc" />
+    </marker>
+    <marker id="arrowG" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#34d399" />
+    </marker>
+  </defs>
+
+  <rect width="960" height="660" fill="url(#bgGrad2)" rx="20" />
+  <rect x="12" y="12" width="936" height="636" fill="none" stroke="#1e293b" stroke-width="2" rx="16" />
+
+  <!-- Title -->
+  <g transform="translate(480, 48)" text-anchor="middle">
+    <text fill="#ffffff" font-size="22" font-weight="800">Hybrid Intelligence Architecture</text>
+    <text y="24" fill="#94a3b8" font-size="13">Multi-Tier Data &amp; AI Pipeline (ML + Rule-Based Engine + LLM + Serverless DB)</text>
+  </g>
+
+  <!-- Node 1: Candidate Profile (Top) -->
+  <g transform="translate(480, 125)" text-anchor="middle" filter="url(#shadow2)">
+    <rect x="-240" y="-30" width="480" height="60" rx="16" fill="url(#blueNode)" stroke="#60a5fa" stroke-width="2" />
+    <text y="-5" fill="#ffffff" font-size="15" font-weight="800">Candidate Profile &amp; Knowledge Input</text>
+    <text y="16" fill="#bfdbfe" font-size="12">Uploaded Resume (PDF/DOCX) or Conversational Voice AI Builder</text>
+  </g>
+
+  <!-- Connectors from Top to Left & Right Branches -->
+  <path d="M 360 155 L 260 215" stroke="#60a5fa" stroke-width="2.5" marker-end="url(#arrowB)" fill="none" />
+  <path d="M 600 155 L 700 215" stroke="#60a5fa" stroke-width="2.5" marker-end="url(#arrowB)" fill="none" />
+
+  <!-- Node 2: Scikit-Learn ML Engine (Left) -->
+  <g transform="translate(240, 275)" text-anchor="middle" filter="url(#shadow2)">
+    <rect x="-190" y="-55" width="380" height="110" rx="16" fill="#1e293b" stroke="#f97316" stroke-width="2" />
+    <rect x="-190" y="-55" width="380" height="32" rx="16" fill="url(#orangeNode)" />
+    <rect x="-190" y="-30" width="380" height="10" fill="url(#orangeNode)" />
+    <text y="-34" fill="#ffffff" font-size="13" font-weight="800">Scikit-Learn Machine Learning Engine</text>
+    <text y="-2" fill="#cbd5e1" font-size="11" text-anchor="start" x="-170">• SVM Multi-Class Domain Classifier (100% Accuracy)</text>
+    <text y="18" fill="#cbd5e1" font-size="11" text-anchor="start" x="-170">• TF-IDF Vectorization &amp; Cosine Similarity</text>
+    <text y="38" fill="#cbd5e1" font-size="11" text-anchor="start" x="-170">• Automated Technical Skills Matrix Match</text>
+  </g>
+
+  <!-- Node 3: Rule-Based Placement Engine (Right) -->
+  <g transform="translate(720, 275)" text-anchor="middle" filter="url(#shadow2)">
+    <rect x="-190" y="-55" width="380" height="110" rx="16" fill="#1e293b" stroke="#14b8a6" stroke-width="2" />
+    <rect x="-190" y="-55" width="380" height="32" rx="16" fill="url(#tealNode)" />
+    <rect x="-190" y="-30" width="380" height="10" fill="url(#tealNode)" />
+    <text y="-34" fill="#ffffff" font-size="13" font-weight="800">Strict Rule-Based Placement Engine</text>
+    <text y="-2" fill="#cbd5e1" font-size="11" text-anchor="start" x="-170">• Recruiter Cutoffs Evaluation (CGPA ≥ 8.0, 7.5, 6.5)</text>
+    <text y="18" fill="#cbd5e1" font-size="11" text-anchor="start" x="-170">• Active Backlog &amp; Eligible Branch Filter</text>
+    <text y="38" fill="#cbd5e1" font-size="11" text-anchor="start" x="-170">• Tier 1 / 2 / 3 Categorization (Google, Amazon, TCS)</text>
+  </g>
+
+  <!-- Connectors from ML & Rules to Gemini Center -->
+  <path d="M 330 330 L 400 395" stroke="#c084fc" stroke-width="2.5" marker-end="url(#arrowP)" fill="none" />
+  <path d="M 630 330 L 560 395" stroke="#c084fc" stroke-width="2.5" marker-end="url(#arrowP)" fill="none" />
+
+  <!-- Node 4: Generative AI Copilot (Gemini) -->
+  <g transform="translate(480, 445)" text-anchor="middle" filter="url(#shadow2)">
+    <rect x="-240" y="-45" width="480" height="90" rx="16" fill="#1e293b" stroke="#a855f7" stroke-width="2" />
+    <rect x="-240" y="-45" width="480" height="30" rx="16" fill="url(#purpleNode)" />
+    <rect x="-240" y="-22" width="480" height="10" fill="url(#purpleNode)" />
+    <text y="-26" fill="#ffffff" font-size="13" font-weight="800">Generative AI Copilot (Google Gemini 1.5 Flash)</text>
+    <text y="4" fill="#cbd5e1" font-size="11">• Context-Aware Technical Mock Interviewer &amp; Speech Evaluator</text>
+    <text y="24" fill="#cbd5e1" font-size="11">• Real-Time ATS Resume Optimizer &amp; 1/3/5-Year Career Roadmap</text>
+  </g>
+
+  <!-- Connector from Gemini to Neon DB & UI -->
+  <path d="M 480 490 L 480 540" stroke="#34d399" stroke-width="3" marker-end="url(#arrowG)" fill="none" />
+
+  <!-- Node 5: Storage & Interface (Bottom) -->
+  <g transform="translate(480, 585)" text-anchor="middle" filter="url(#shadow2)">
+    <rect x="-290" y="-35" width="580" height="70" rx="18" fill="url(#greenNode)" stroke="#6ee7b7" stroke-width="2.5" />
+    <text y="-7" fill="#ffffff" font-size="15" font-weight="900">Neon Serverless PostgreSQL &amp; Vite / React 18 UI</text>
+    <text y="16" fill="#ecfdf5" font-size="12">psycopg2 Connection Pooling • Relational Integrity • Desktop &amp; Mobile Responsive Canvas</text>
+  </g>
+</svg>

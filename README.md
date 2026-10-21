@@ -36,6 +36,13 @@
 
 ## 🧠 Hybrid Intelligence Architecture
 
+<p align="center">
+  <img src="docs/images/architecture-flowchart.svg" alt="CareerFit AI Hybrid Intelligence Architecture Flowchart" width="100%" />
+</p>
+
+<details>
+<summary><b>🔍 View Mermaid Architecture Definition</b></summary>
+
 ```mermaid
 flowchart TD
     classDef profile fill:#2563eb,stroke:#1d4ed8,stroke-width:2px,color:#fff
@@ -56,6 +63,8 @@ flowchart TD
     Gemini -->|"Structured Results"| NeonDB[("Neon Serverless PostgreSQL<br/>Connection Pooling & Schema Persistence")]:::storage
     NeonDB -->|"Real-Time Analytics"| Dashboard["Vite + React 18 User Interface<br/>(Desktop & Mobile Responsive)"]:::ui
 ```
+
+</details>
 
 ---
 
@@ -150,6 +159,13 @@ The relational schema is hosted on **Neon Serverless PostgreSQL** and includes t
 ### 1. End-to-End User Experience & Feature Lifecycle Flowchart
 This flowchart illustrates how a candidate navigates through CareerFit AI: from account creation and resume parsing to ATS scoring, placement eligibility clearance, interactive video mock interview, and live recruiter job matching.
 
+<p align="center">
+  <img src="docs/images/system-flowchart.svg" alt="CareerFit AI End-to-End System Flowchart" width="100%" />
+</p>
+
+<details>
+<summary><b>🔍 View Mermaid User Journey Definition</b></summary>
+
 ```mermaid
 flowchart TD
     classDef startNode fill:#2563eb,stroke:#1d4ed8,stroke-width:2px,color:#fff
@@ -191,10 +207,19 @@ flowchart TD
     LiveFeed --> PlacementReady
 ```
 
+</details>
+
 ---
 
 ### 2. Full-Stack Architecture & Data Request Flowchart
 This flowchart details the physical request lifecycle between the client, backend API, machine learning services, generative AI copilot, and Neon Serverless PostgreSQL.
+
+<p align="center">
+  <img src="docs/images/architecture-flowchart.svg" alt="CareerFit AI Architecture and Data Flowchart" width="100%" />
+</p>
+
+<details>
+<summary><b>🔍 View Mermaid Architecture Definition</b></summary>
 
 ```mermaid
 flowchart LR
@@ -246,6 +271,8 @@ flowchart LR
     NeonDB -->|"Relational Data Results"| Uvicorn
     Uvicorn -->|"Unified JSON Response"| ClientApp
 ```
+
+</details>
 
 ---
 
