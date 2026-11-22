@@ -148,6 +148,21 @@ def migrate_neon(database_url: str = None):
             );
         ''')
 
+        cur.execute('''
+            CREATE TABLE IF NOT EXISTS public.support_tickets (
+                id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+                name TEXT,
+                email TEXT NOT NULL,
+                subject TEXT NOT NULL,
+                category TEXT NOT NULL,
+                priority TEXT DEFAULT 'normal',
+                message TEXT NOT NULL,
+                status TEXT DEFAULT 'open',
+                created_at TIMESTAMPTZ DEFAULT NOW()
+            );
+        ''')
+
         print("🌱 Seeding initial companies & eligibility requirements...")
         demo_companies = [
             ("Google", "Technology / Search & Cloud", "Software Engineer (SWE)", 8.0, ["Data Structures", "Algorithms", "C++", "System Design", "Python"]),

@@ -119,6 +119,12 @@ flowchart TD
 - **Cloud Diagnostics**: Real-time telemetry monitoring connection status for **Neon Serverless PostgreSQL**, AI engine, and ML classifiers.
 - **Data Export**: Export your complete profile and settings to JSON.
 
+### 11. 🛟 Help & Support Intelligence Center (`/app/help`)
+- **Interactive Knowledge Base & FAQs**: Searchable categorized guides covering ATS scoring formulas, campus recruiter cutoffs, and mock interview speech recognition.
+- **AI Support Agent**: Instant conversational troubleshooting for platform features, placement questions, and low ATS score diagnosis.
+- **Hardware & Device Health Diagnostics**: Live in-browser microphone level visualizer, camera stream tester, speech API telemetry, and backend status check.
+- **Student Support Ticket Hub**: Issue tracking form with priority tiers, automatic ticket generation (`CF-XXXXXX`), and Neon PostgreSQL persistence.
+
 ---
 
 ## 🛠️ Technology Stack
@@ -406,6 +412,14 @@ Frontend Web Application will be live at: **`http://localhost:5173`**
 | `POST`| `/api/career/cheat-sheet` | Generate customized 12-question interview cheat sheet |
 | `GET` | `/api/career/tracker` | Fetch Kanban job applications |
 | `POST`| `/api/career/tracker` | Create or update job application |
+
+### 4. Help & Support Intelligence Center
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/help/faqs` | Search and filter platform FAQs by query and category |
+| `POST`| `/api/help/ask` | Contextual AI Support Assistant powered by Gemini |
+| `POST`| `/api/help/ticket` | Submit and persist student support inquiry with ticket ID |
+| `GET` | `/api/help/diagnostics` | System health check and API latency monitoring |
 
 ---
 

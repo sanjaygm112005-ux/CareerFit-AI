@@ -3,7 +3,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, FileText, Target,
-  Briefcase, History, Settings, LogOut, Zap, Bot, Brain, Mic, PenTool, Compass, Link as LinkIcon, Layers, Globe, Code, GraduationCap, TrendingUp, ClipboardList, BookOpen, ShieldCheck, Activity, X
+  Briefcase, History, Settings, LogOut, Zap, Bot, Brain, Mic, PenTool, Compass, Link as LinkIcon, Layers, Globe, Code, GraduationCap, TrendingUp, ClipboardList, BookOpen, ShieldCheck, Activity, X, HelpCircle
 } from 'lucide-react';
 import { authService } from '../services/auth';
 
@@ -51,6 +51,7 @@ const linkGroups = [
       { to: '/app/job-tracker', icon: ClipboardList, label: 'Job Tracker' },
       { to: '/app/history', icon: History, label: 'History' },
       { to: '/app/settings', icon: Settings, label: 'Settings' },
+      { to: '/app/help', icon: HelpCircle, label: 'Help & Support' },
     ]
   },
   {
@@ -104,6 +105,11 @@ const Sidebar: React.FC<SidebarProps> = ({ mobileOpen = false, onClose }) => {
                   <>
                     <Icon size={18} className={isActive ? 'text-blue-600' : 'text-slate-400'} />
                     <span className="truncate">{label}</span>
+                    {to === '/app/help' && (
+                      <span className="ml-auto text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-700">
+                        Help
+                      </span>
+                    )}
                   </>
                 )}
               </NavLink>

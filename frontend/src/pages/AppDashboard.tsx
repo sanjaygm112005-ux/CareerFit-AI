@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Target, Upload, ArrowRight, FileText, Video, Loader2
+  Target, Upload, ArrowRight, FileText, Video, Loader2, HelpCircle
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import AnalyticsCharts from '../components/AnalyticsCharts';
@@ -72,7 +72,7 @@ const AppDashboard: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto py-3 sm:py-8 animate-fade-in">
       {/* Greeting */}
-      <div className="mb-6 sm:mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-1">
             Welcome back, <span className="text-gradient">{name}</span> 👋
@@ -82,6 +82,31 @@ const AppDashboard: React.FC = () => {
         <button onClick={() => navigate('/app/upload')} className="btn-primary py-2.5 sm:py-3 px-5 sm:px-6 flex items-center justify-center gap-2 shadow-lg shadow-brand-500/20 hover:scale-105 transition-transform w-full sm:w-auto cursor-pointer">
           <Upload size={18} />
           <span>New Resume</span>
+        </button>
+      </div>
+
+      {/* Prominent Help & Placement Assistance Banner */}
+      <div className="mb-8 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-cyan-600/10 border border-blue-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+            <HelpCircle size={22} />
+          </div>
+          <div>
+            <div className="flex items-center gap-2 mb-0.5">
+              <h4 className="font-extrabold text-slate-900 text-sm sm:text-base">Need Placement or Resume Guidance?</h4>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-100 text-blue-700 uppercase">24/7 Support</span>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-600">
+              Instant AI answers, Tier 1/2/3 campus cutoff audits, and microphone/camera troubleshooting.
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={() => navigate('/app/help')}
+          className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 shrink-0 cursor-pointer group"
+        >
+          <span>Open Help Center</span>
+          <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
         </button>
       </div>
 

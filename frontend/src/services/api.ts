@@ -593,3 +593,90 @@ export async function getSystemDiagnostics(): Promise<SystemDiagnostics> {
   return res.json();
 }
 
+// ── Help & Support Interfaces & Services ──────────────────────────────────────
+export interface HelpFAQ {
+  id: string;
+  category: string;
+  category_label: string;
+  question: string;
+  answer: string;
+  tags?: string[];
+  action_link?: string;
+  action_label?: string;
+}
+
+export interface SupportTicketPayload {
+  name?: string;
+  email: string;
+  subject: string;
+  category: string;
+  priority?: string;
+  message: string;
+}
+
+export interface SupportTicketResponse {
+  status: string;
+  ticket_id: string;
+  email: string;
+  subject: string;
+  created_at: string;
+  persisted: boolean;
+  message: string;
+}
+
+export interface HelpAiResponse {
+  answer: string;
+  suggested_actions?: string[];
+  related_links?: Array<{ title: string; path: string }>;
+}
+
+export interface HelpDiagnosticsResponse {
+  api_status: string;
+  database_connected: boolean;
+  gemini_ai_status: string;
+  ml_model_status: string;
+  system_time: string;
+  version: string;
+}
+
+export async function getHelpFAQs(category?: string, query?: string): Promise<{ faqs: HelpFAQ[]; total: number }> {
+  const params = new URLSearchParams();
+  if (category && category !== 'all') params.append('category', category);
+  if (query) params.append('q', query);
+  const qs = params.toString() ? `?${params.toString()}` : '';
+  const res = await fetch(`${BASE_URL}/help/faqs${qs}`);
+  if (!res.ok) throw new Error('Failed to load FAQs');
+  return res.json();
+}
+
+export async function askHelpAI(question: string, context?: string): Promise<HelpAiResponse> {
+  const res = await fetch(`${BASE_URL}/help/ask`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ question, context }),
+  });
+  if (!res.ok) throw new Error('AI Support Assistant failed to respond');
+  return res.json();
+}
+
+export async function submitSupportTicket(ticket: SupportTicketPayload): Promise<SupportTicketResponse> {
+  const headers = await getAuthHeader();
+  const res = await fetch(`${BASE_URL}/help/ticket`, {
+    method: 'POST',
+    headers: { ...headers, 'Content-Type': 'application/json' },
+    body: JSON.stringify(ticket),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: 'Failed to submit ticket' }));
+    throw new Error(err.detail || 'Failed to submit ticket');
+  }
+  return res.json();
+}
+
+export async function getHelpDiagnostics(): Promise<HelpDiagnosticsResponse> {
+  const res = await fetch(`${BASE_URL}/help/diagnostics`);
+  if (!res.ok) throw new Error('Failed to check diagnostics');
+  return res.json();
+}
+
+

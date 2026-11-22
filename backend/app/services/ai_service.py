@@ -1116,3 +1116,71 @@ Return ONLY valid JSON (no markdown, no code blocks) in this exact format:
         "action_items": ["Update your LinkedIn today", "Apply to 3 senior roles this week", "Start a side project"]
     }
 
+
+async def answer_help_query(question: str, user_context: Optional[dict] = None) -> dict:
+    """Answers user support, troubleshooting, and placement questions using Gemini."""
+    prompt = f"""You are the official CareerFit AI Support Assistant & Career Placement Advisor.
+Your job is to answer user questions about the platform, technical issues, interview prep, and campus placements accurately and concisely.
+
+PLATFORM KNOWLEDGE:
+- Resume & ATS: Evaluates Content, Formatting, Keywords, Grammar. Recommends LaTeX rewrite and PDF export.
+- Placement Engine: Evaluates CGPA cutoffs, active backlogs, engineering branch, and mandatory skills for Tier 1 (FAANG), Tier 2 (Unicorns), Tier 3 (IT Services).
+- Mock Interview: Interactive camera/mic simulator using the STAR method for behavioral and technical questions.
+- ML Classifier: Scikit-learn SVM multi-class classifier predicting 7 career domains (Data Science, DevOps, Cybersecurity, Java, Python, Web, SWE) with confusion matrix.
+- Troubleshooting: If mic/camera blocked, advise user to click site settings/lock icon in URL bar and toggle permissions to Allow.
+
+USER QUESTION:
+{question}
+
+Return strictly a JSON object with:
+"answer": string (concise markdown answer, maximum 3-4 sentences with formatting/bullet points if helpful)
+"suggested_actions": array of 2-3 short action phrases
+"related_links": array of 1-3 objects each with "title" (string) and "path" (string from /app/upload, /app/analysis, /app/placement-engine, /app/interview, /app/builder, /app/test, /app/flashcards, /app/career-roadmap, /app/job-tracker, /app/settings, /app/ml-evaluation)
+"""
+    try:
+        res = await _call_gemini(prompt, return_json=True)
+        if isinstance(res, dict) and "answer" in res:
+            return res
+    except Exception as e:
+        print(f"Warning: Gemini help query error: {e}")
+
+    # Intelligent keyword-based fallback if AI is unavailable or offline
+    q_lower = question.lower()
+    if any(k in q_lower for k in ["mic", "camera", "audio", "video", "permission"]):
+        return {
+            "answer": "To allow microphone or camera access: 1) Click the tune/lock icon in your browser address bar (left of the URL). 2) Switch 'Microphone' and 'Camera' to 'Allow'. 3) Refresh the page. You can also run the Device Diagnostics check on this page.",
+            "suggested_actions": ["Allow Browser Permissions", "Run Diagnostics", "Test Mock Interview"],
+            "related_links": [
+                {"title": "Open Mock Interview", "path": "/app/interview"},
+                {"title": "Profile & Settings", "path": "/app/settings"}
+            ]
+        }
+    elif any(k in q_lower for k in ["tier", "placement", "eligib", "cutoff", "backlog", "cgpa"]):
+        return {
+            "answer": "The Placement Engine checks your CGPA, active backlogs, branch, and skills against company thresholds. Tier 1 companies require >= 7.5 CGPA and 0 backlogs. Tier 2 requires >= 7.0 CGPA. Tier 3 requires >= 6.0 CGPA.",
+            "suggested_actions": ["Update Profile CGPA", "Audit Tier Eligibility", "View Hiring Companies"],
+            "related_links": [
+                {"title": "Placement Eligibility Engine", "path": "/app/placement-engine"},
+                {"title": "Company Recruiter Criteria", "path": "/app/admin"}
+            ]
+        }
+    elif any(k in q_lower for k in ["ats", "score", "resume", "format", "keyword"]):
+        return {
+            "answer": "Your ATS score is computed across Content (30%), Formatting (25%), Skill Density (25%), and Grammar (20%). To increase your score above 90, quantify achievements with metrics, resolve keyword gaps, and try the 1-Click AI Resume Rewrite.",
+            "suggested_actions": ["View ATS Breakdown", "Check Gap Analysis", "Generate LaTeX Resume"],
+            "related_links": [
+                {"title": "ATS Score Breakdown", "path": "/app/analysis"},
+                {"title": "AI Resume Builder", "path": "/app/builder"}
+            ]
+        }
+    else:
+        return {
+            "answer": f"CareerFit AI is an end-to-end career intelligence and placement readiness platform. For your question: '{question}', explore your ATS scoring breakdown, check placement eligibility cutoffs, or practice mock interview questions tailored to your resume.",
+            "suggested_actions": ["Audit Resume ATS", "Check Placement Clearance", "Launch Mock Interview"],
+            "related_links": [
+                {"title": "Placement Engine", "path": "/app/placement-engine"},
+                {"title": "AI Mock Interview", "path": "/app/interview"},
+                {"title": "Resume Analyzer", "path": "/app/upload"}
+            ]
+        }
+

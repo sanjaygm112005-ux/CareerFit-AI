@@ -206,8 +206,21 @@ CREATE POLICY "Users manage own job tracker"
   USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
 
--- =============================================================================
--- Storage Bucket (run separately or via Supabase Dashboard)
+-- ── Support Tickets ───────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS public.support_tickets (
+  id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id     UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  name        TEXT,
+  email       TEXT NOT NULL,
+  subject     TEXT NOT NULL,
+  category    TEXT NOT NULL,
+  priority    TEXT DEFAULT 'normal',
+  message     TEXT NOT NULL,
+  status      TEXT NOT NULL DEFAULT 'open',
+  created_at  TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ── Storage Bucket (run separately or via Supabase Dashboard)
 -- =============================================================================
 -- In Supabase Dashboard → Storage → Create bucket "resumes" (private)
 -- Then add policy: authenticated users can upload to their own folder

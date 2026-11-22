@@ -1,9 +1,10 @@
 // src/App.tsx
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, Link } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { useAuth } from './hooks/useAuth';
 import Sidebar from './components/Sidebar';
+import FloatingHelpWidget from './components/FloatingHelpWidget';
 import Landing from './pages/Landing';
 import Upload from './pages/Upload';
 import Results from './pages/Results';
@@ -28,7 +29,8 @@ import Admin from './pages/Admin';
 import MLEvaluation from './pages/MLEvaluation';
 import ResetPassword from './pages/ResetPassword';
 import Settings from './pages/Settings';
-import { Loader2, Menu, Zap } from 'lucide-react';
+import Help from './pages/Help';
+import { Loader2, Menu, Zap, HelpCircle } from 'lucide-react';
 
 // Protected layout with sidebar
 const AppLayout: React.FC = () => {
@@ -63,13 +65,24 @@ const AppLayout: React.FC = () => {
           </div>
         </div>
 
-        <button
-          onClick={() => setMobileSidebarOpen(true)}
-          className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100/70 border border-blue-200/60 rounded-lg transition-colors cursor-pointer"
-        >
-          <span>Features</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
-        </button>
+        <div className="flex items-center gap-2">
+          <Link
+            to="/app/help"
+            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-slate-700 hover:text-blue-600 bg-slate-100 hover:bg-blue-50 border border-slate-200/80 rounded-lg transition-colors cursor-pointer"
+            aria-label="Open Help & Support"
+          >
+            <HelpCircle size={14} className="text-blue-600" />
+            <span>Help</span>
+          </Link>
+
+          <button
+            onClick={() => setMobileSidebarOpen(true)}
+            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100/70 border border-blue-200/60 rounded-lg transition-colors cursor-pointer"
+          >
+            <span>Features</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
+          </button>
+        </div>
       </header>
 
       {/* Sidebar with mobile drawer support */}
@@ -117,6 +130,8 @@ const App: React.FC = () => {
         <Route path="/login" element={<PublicRoute><Landing /></PublicRoute>} />
         <Route path="/signup" element={<PublicRoute><Landing /></PublicRoute>} />
         <Route path="/reset-password" element={<PublicRoute><ResetPassword /></PublicRoute>} />
+        <Route path="/help" element={<Navigate to="/app/help" replace />} />
+        <Route path="/support" element={<Navigate to="/app/help" replace />} />
 
         {/* Protected app layout */}
         <Route path="/app" element={<AppLayout />}>
@@ -149,11 +164,15 @@ const App: React.FC = () => {
           <Route path="job-match" element={<Results />} />
           <Route path="profile" element={<Settings />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="help" element={<Help />} />
+          <Route path="support" element={<Help />} />
         </Route>
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      {/* Global Floating 24/7 Help Widget - Visible Across Entire Platform */}
+      <FloatingHelpWidget />
     </Router>
   );
 };

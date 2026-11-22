@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import {
   FileText, Sparkles, Layers, Target, GraduationCap,
-  Eye, EyeOff, ArrowRight, ShieldCheck, CheckCircle2
+  Eye, EyeOff, ArrowRight, ShieldCheck, CheckCircle2, HelpCircle
 } from 'lucide-react';
 import { authService } from '../services/auth';
 import { useAuth } from '../hooks/useAuth';
@@ -190,6 +190,17 @@ const Landing: React.FC = () => {
 
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-b from-white via-slate-50 to-blue-50/20 text-slate-900 flex items-center justify-center p-4 md:p-8 overflow-hidden select-none">
+      
+      {/* Top Floating Help & Support Shortcut */}
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-8 z-30 flex items-center gap-3">
+        <Link
+          to="/app/help"
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 hover:bg-white text-slate-700 hover:text-blue-600 text-xs font-bold border border-slate-200/90 shadow-sm backdrop-blur-md transition-all hover:scale-105 cursor-pointer"
+        >
+          <HelpCircle size={14} className="text-blue-600" />
+          <span>Help &amp; Support</span>
+        </Link>
+      </div>
       
       {/* 1. Soft Light Ambient Gradient Halos */}
       <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-gradient-to-br from-blue-100/60 to-cyan-50/40 rounded-full blur-[120px] pointer-events-none" />
@@ -568,10 +579,15 @@ const Landing: React.FC = () => {
                   <span>Explore Demo Workspace (No Login Required)</span>
                 </button>
 
-                <div className="flex items-center justify-center gap-3 text-[11px] text-slate-500">
+                <div className="flex flex-wrap items-center justify-center gap-2.5 text-[11px] text-slate-500 pt-1">
                   <span className="flex items-center gap-1">
                     <CheckCircle2 size={12} className="text-emerald-500" /> Free Tier Available
                   </span>
+                  <span>•</span>
+                  <Link to="/app/help" className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 hover:underline font-bold transition-colors">
+                    <HelpCircle size={12} />
+                    <span>Help &amp; FAQs</span>
+                  </Link>
                   <span>•</span>
                   <span className="flex items-center gap-1">
                     <ShieldCheck size={12} className="text-blue-500" /> 256-bit Encrypted

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import auth, resume, job, chat, test, interview, github, linkedin, premium, career, ml, admin, eligibility
+from .routers import auth, resume, job, chat, test, interview, github, linkedin, premium, career, ml, admin, eligibility, help
 
 app = FastAPI(title="AI Resume Analyzer", version="1.0.0")
 
@@ -26,6 +26,7 @@ app.include_router(career.router, prefix="/api/career", tags=["Career"])
 app.include_router(ml.router, prefix="/api/ml", tags=["ML"])
 app.include_router(admin.router, prefix="/api/admin", tags=["Admin"])
 app.include_router(eligibility.router, prefix="/api/eligibility", tags=["Eligibility"])
+app.include_router(help.router, prefix="/api/help", tags=["Help & Support"])
 
 
 @app.get("/")
